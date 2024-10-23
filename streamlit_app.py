@@ -80,7 +80,7 @@ def add_dynamic_field(title, label, input_type):
     st.session_state.dynamic_fields.append(new_field)
 
 # Title of the app
-st.title("Retirement Planning Form with Custom Dynamic Fields")
+st.title("Retirement Planning Form")
 
 # Main form layout with static inputs
 with st.form("retirement_planning_form"):
