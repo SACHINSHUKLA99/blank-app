@@ -47,7 +47,7 @@ with st.form("retirement_planning_form"):
     submit = st.form_submit_button("Submit")
 
 # Input to create new dynamic field
-st.subheader("Add Custom Dynamic Field")
+st.subheader("Add Goals")
 custom_title = st.text_input("Enter Goal Title")
 custom_label = st.text_input("Enter Goal Name")
 input_type = st.selectbox("Select Input Type", ("Text", "Number"))
