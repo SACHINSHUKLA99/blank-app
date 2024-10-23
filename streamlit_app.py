@@ -4,31 +4,31 @@ import streamlit as st
 if 'dynamic_fields' not in st.session_state:
     st.session_state.dynamic_fields = []
 
-# Function to add a new dynamic field
-def add_dynamic_field():
+# Function to add a new dynamic field with custom title, label, and input type
+def add_dynamic_field(title, label, input_type):
     new_field = {
-        'title': f"Dynamic Field {len(st.session_state.dynamic_fields) + 1}",
-        'label': f"Label {len(st.session_state.dynamic_fields) + 1}",
+        'title': title,
+        'label': label,
+        'input_type': input_type,
         'input_key': f"input_{len(st.session_state.dynamic_fields)}"
     }
     st.session_state.dynamic_fields.append(new_field)
 
 # Title of the app
-st.title("Retirement Planning Form with Dynamic Fields")
+st.title("Retirement Planning Form with Custom Dynamic Fields")
 
-# Create two columns for the form layout
-col1, col2 = st.columns(2)
-
-# Main form for static inputs
+# Main form layout with static inputs
 with st.form("retirement_planning_form"):
-    # First column (left side)
+    col1, col2 = st.columns(2)
+
+    # First column (left side) - static fields
     with col1:
         current_age = st.number_input("Current Age", min_value=1, max_value=120, step=1)
         life_expectancy = st.number_input("Life Expectancy", min_value=1, max_value=120, step=1)
         retirement_age = st.number_input("Retirement Age", min_value=1, max_value=120, step=1)
         current_expenditure = st.number_input("Current Expenditure (₹ per year)", min_value=0.0, step=1000.0)
 
-    # Second column (right side)
+    # Second column (right side) - static fields
     with col2:
         expected_return = st.number_input("Expected Return %", min_value=0.0, max_value=100.0, step=0.1)
         risk_appetite = st.selectbox("Risk Appetite", ("Low", "Moderate", "High"))
@@ -38,14 +38,27 @@ with st.form("retirement_planning_form"):
     # Dynamic fields based on session state
     st.subheader("Dynamic Fields")
     for field in st.session_state.dynamic_fields:
-        st.text_input(field['label'], key=field['input_key'])
-
-    # Submit button (below both columns)
+        st.write(f"**{field['title']}**")
+        if field['input_type'] == 'Text':
+            st.text_input(field['label'], key=field['input_key'])
+        elif field['input_type'] == 'Number':
+            st.number_input(field['label'], key=field['input_key'])
+    
+    # Submit button
     submit = st.form_submit_button("Submit")
 
-# Button to add new dynamic fields
+# Input to create new dynamic field
+st.subheader("Add Custom Dynamic Field")
+custom_title = st.text_input("Enter Field Title")
+custom_label = st.text_input("Enter Field Label")
+input_type = st.selectbox("Select Input Type", ("Text", "Number"))
+
+# Button to add new dynamic field
 if st.button("Add Dynamic Field"):
-    add_dynamic_field()
+    if custom_title and custom_label:
+        add_dynamic_field(custom_title, custom_label, input_type)
+    else:
+        st.warning("Please provide both a title and a label for the dynamic field!")
 
 # After submission, display the entered data
 if submit:
@@ -62,5 +75,4 @@ if submit:
     # Display dynamic field values
     st.write("### Dynamic Field Inputs")
     for field in st.session_state.dynamic_fields:
-        st.write(f"**{field['label']}**: {st.session_state[field['input_key']]}")
-
+        st.write(f"**{field['label']}**: {st.session_state.get(field['input_key'], '')}")
