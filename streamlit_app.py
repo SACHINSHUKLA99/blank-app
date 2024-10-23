@@ -24,9 +24,12 @@ with st.form("retirement_planning_form"):
     # First column (left side) - static fields
     with col1:
         current_age = st.number_input("Age", min_value=1, max_value=120, step=1)
-        life_expectancy = st.number_input("Monthly Income (₹)", min_value=1, max_value=120, step=1)
-        retirement_age = st.number_input("Monthly Expenditure (₹)", min_value=1, max_value=120, step=1)
+        present_portfolio = st.number_input("Present Portfolio (₹)", min_value=1, step=1)
+        income = st.number_input("Income (₹)", min_value=1, max_value=120, step=1)
         current_expenditure = st.number_input("Upfront investment (₹)", min_value=0.0, step=1000.0)
+        expense_post_retirement = st.number_input("Expense Post Retirement (₹)", min_value=1000, step=1)
+        house_expense = st.number_input("House Expense (at 30) (₹)", min_value=1000, step=1)
+        expenses = st.number_input("Expenses", min_value=1000, step=1)
 
     # Dynamic fields based on session state
     st.subheader("Goals")
@@ -63,13 +66,11 @@ if st.button("Add Dynamic Field"):
 if submit:
     st.success("Form Submitted Successfully!")
     st.write(f"**Current Age**: {current_age}")
-    st.write(f"**Life Expectancy**: {life_expectancy}")
+    st.write(f"**Present Portfolio**: {present_portfolio}")
     st.write(f"**Retirement Age**: {retirement_age}")
-    st.write(f"**Expected Return %**: {expected_return}%")
-    st.write(f"**Current Expenditure**: ₹{current_expenditure}")
-    st.write(f"**Risk Appetite**: {risk_appetite}")
-    st.write(f"**Current Lumpsum**: ₹{current_lumpsum}")
-    st.write(f"**Inflation Rate**: {inflation}%")
+    st.write(f"**House Expense %**: {house_expense}%")
+    st.write(f"**Expense Post Retirement**: ₹{expense_post_retirement}")
+    st.write(f"**Expenses**: {expenses}")
 
     # Display dynamic field values
     st.write("### Dynamic Field Inputs")
