@@ -24,8 +24,12 @@ with st.form("retirement_plan_form"):
 
 # After submission
 if submit:
-    st.success(f"Form Submitted Successfully!")
-    st.write(f"**Name**: {name}")
-    st.write(f"**Age**: {age}")
-    st.write(f"**Gender**: {gender}")
-    st.write(f"**Email**: {email}")
+    st.success("Form Submitted Successfully!")
+    st.write(f"**Current Age**: {current_age}")
+    st.write(f"**Life Expectancy**: {life_expectancy}")
+    st.write(f"**Retirement Age**: {retirement_age}")
+    st.write(f"**Expected Return %**: {expected_return}%")
+    st.write(f"**Current Expenditure**: {current_expenditure}")
+    st.write(f"**Risk Appetite**: {risk_appetite}")
+    st.write(f"**Current Lumpsum**: {current_lumpsum}")
+    st.write(f"**Inflation Rate**: {inflation}%")
