@@ -1,5 +1,48 @@
 import streamlit as st
 
+# Inject custom CSS for Amazon Pay themed styling
+st.markdown("""
+    <style>
+    /* App Background */
+    .stApp {
+        background-color: #F2F2F2; /* Light background for contrast */
+    }
+
+    /* Titles and Text Colors */
+    h1, h2, h3, h4, h5, h6 {
+        color: #232F3E;  /* Amazon Pay dark blue */
+    }
+    
+    label {
+        color: #232F3E;  /* Dark blue text */
+        font-weight: bold;
+    }
+
+    /* Input Field Borders */
+    input, select {
+        border-color: #232F3E;
+        border-width: 2px;
+    }
+
+    /* Amazon Pay Button Style */
+    div.stButton > button {
+        background-color: #FF9900;  /* Amazon Pay orange */
+        color: white;
+        border-radius: 8px;
+        border: none;
+        padding: 0.4rem 1.2rem;
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
+    div.stButton > button:hover {
+        background-color: #FFB84D;  /* Lighter shade on hover */
+        color: white;
+        transition: 0.3s;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 # Initialize the session state to store dynamic fields if it's not already present
 if 'dynamic_fields' not in st.session_state:
     st.session_state.dynamic_fields = []
@@ -26,11 +69,10 @@ with st.form("retirement_planning_form"):
         current_age = st.number_input("Age", min_value=1, max_value=120, step=1)
         present_portfolio = st.number_input("Present Portfolio (₹)", min_value=1, step=1)
         income = st.number_input("Income (₹)", min_value=1, max_value=120, step=1)
-        upfront_investment = st.number_input("Upfront investment (₹)", min_value=0.0, step=1000.0)
+        current_expenditure = st.number_input("Upfront investment (₹)", min_value=0.0, step=1000.0)
         expense_post_retirement = st.number_input("Expense Post Retirement (₹)", min_value=1000, step=1)
         house_expense = st.number_input("House Expense (at 30) (₹)", min_value=1000, step=1)
         expenses = st.number_input("Expenses", min_value=1000, step=1)
-        retirement_age = st.number_input("Retirement Age", min_value=1, max_value=120, step=1)
 
     # Dynamic fields based on session state
     st.subheader("Goals")
@@ -67,13 +109,11 @@ if st.button("Add Dynamic Field"):
 if submit:
     st.success("Form Submitted Successfully!")
     st.write(f"**Current Age**: {current_age}")
-    st.write(f"**Present Portfolio**: {present_portfolio}")
-    st.write(f"**Retirement Age**: {retirement_age}")
-    st.write(f"**House Expense %**: {house_expense}%")
+    st.write(f"**Present Portfolio**: ₹{present_portfolio}")
+    st.write(f"**Income**: ₹{income}")
+    st.write(f"**House Expense**: ₹{house_expense}")
     st.write(f"**Expense Post Retirement**: ₹{expense_post_retirement}")
-    st.write(f"**Expenses**: {expenses}")
-    st.write(f"**Income**: {income}")
-    st.write(f"**Upfront investment**: {upfront_investment}")
+    st.write(f"**Expenses**: ₹{expenses}")
 
     # Display dynamic field values
     st.write("### Dynamic Field Inputs")
