@@ -23,17 +23,10 @@ with st.form("retirement_planning_form"):
 
     # First column (left side) - static fields
     with col1:
-        current_age = st.number_input("Current Age", min_value=1, max_value=120, step=1)
-        life_expectancy = st.number_input("Life Expectancy", min_value=1, max_value=120, step=1)
-        retirement_age = st.number_input("Retirement Age", min_value=1, max_value=120, step=1)
-        current_expenditure = st.number_input("Current Expenditure (₹ per year)", min_value=0.0, step=1000.0)
-
-    # Second column (right side) - static fields
-    with col2:
-        expected_return = st.number_input("Expected Return %", min_value=0.0, max_value=100.0, step=0.1)
-        risk_appetite = st.selectbox("Risk Appetite", ("Low", "Moderate", "High"))
-        current_lumpsum = st.number_input("Current Lumpsum (₹ Savings/Investments)", min_value=0.0, step=1000.0)
-        inflation = st.number_input("Inflation Rate %", min_value=0.0, max_value=100.0, step=0.1, value=6.0)
+        current_age = st.number_input("Age", min_value=1, max_value=120, step=1)
+        life_expectancy = st.number_input("Monthly Income", min_value=1, max_value=120, step=1)
+        retirement_age = st.number_input("Monthly Expenditure", min_value=1, max_value=120, step=1)
+        current_expenditure = st.number_input("Upfront investment", min_value=0.0, step=1000.0)
 
     # Dynamic fields based on session state
     st.subheader("Goals")
