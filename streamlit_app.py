@@ -1,15 +1,15 @@
 import streamlit as st
 
 # Setting the title for the app
-st.title("Personal Details Form")
+st.title("Retrirement Plan")
 
 # Creating the form using streamlit form structure
-with st.form("personal_details_form"):
+with st.form("retirement_plan_form"):
     # Input fields for personal details
-    name = st.text_input("Enter your full name")
-    age = st.number_input("Enter your age", min_value=1, max_value=120)
-    gender = st.radio("Select your gender", ("Male", "Female", "Other"))
-    email = st.text_input("Enter your email")
+    name = st.number_input("Current Age")
+    age = st.number_input("Life Expectancy")
+    gender = st.number_input("Retirement Age")
+    email = st.number_input("Expected Return %")
 
     # Submit button
     submit = st.form_submit_button("Submit")
