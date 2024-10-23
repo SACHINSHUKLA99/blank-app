@@ -1,20 +1,20 @@
 import streamlit as st
 
-# Inject custom CSS for Amazon Pay themed styling
+# Inject custom CSS for styling
 st.markdown("""
     <style>
     /* App Background */
     .stApp {
-        background-color: #F2F2F2; /* Light background for contrast */
+        background-color: #FFFFFF; /* White background */
     }
 
     /* Titles and Text Colors */
     h1, h2, h3, h4, h5, h6 {
-        color: #232F3E;  /* Amazon Pay dark blue */
+        color: #232F3E;  /* Dark text color */
     }
     
     label {
-        color: #232F3E;  /* Dark blue text */
+        color: #232F3E;  /* Dark text for labels */
         font-weight: bold;
     }
 
@@ -24,9 +24,9 @@ st.markdown("""
         border-width: 2px;
     }
 
-    /* Amazon Pay Button Style */
+    /* Button Style with Gradient */
     div.stButton > button {
-        background-color: #FF9900;  /* Amazon Pay orange */
+        background: linear-gradient(0deg, #F8C13C 0%, #F6DD9C 100%); /* Gradient background */
         color: white;
         border-radius: 8px;
         border: none;
@@ -36,9 +36,14 @@ st.markdown("""
     }
 
     div.stButton > button:hover {
-        background-color: #FFB84D;  /* Lighter shade on hover */
-        color: white;
+        background: linear-gradient(0deg, #F6DD9C 0%, #F8C13C 100%); /* Invert gradient on hover */
+        color: black;  /* Change text color on hover */
         transition: 0.3s;
+    }
+
+    /* Additional styles for improved readability */
+    .stForm > div > div {
+        padding: 1rem;
     }
     </style>
 """, unsafe_allow_html=True)
