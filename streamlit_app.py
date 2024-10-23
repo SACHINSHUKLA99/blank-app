@@ -11,7 +11,7 @@ with st.form("retirement_planning_form"):
         current_age = st.number_input("Current Age", min_value=1, max_value=120, step=1)
         life_expectancy = st.number_input("Life Expectancy", min_value=1, max_value=120, step=1)
         retirement_age = st.number_input("Retirement Age", min_value=1, max_value=120, step=1)
-        current_expenditure = st.number_input("Current Expenditure ($ per year)", min_value=0.0, step=1000.0)
+        current_expenditure = st.number_input("Current Expenditure (₹ per year)", min_value=0.0, step=1000.0)
 
     # Second column (right side)
     with col2:
