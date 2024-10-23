@@ -11,12 +11,16 @@ def add_dynamic_field(title, label, input_type):
         'label': label,
         'input_type': input_type,
         'input_key': f"input_{len(st.session_state.dynamic_fields)}",
-        'subfields': []  # List to store subfields
+        'subfields': []  # Initialize the subfields as an empty list
     }
     st.session_state.dynamic_fields.append(new_field)
 
 # Function to add a subfield to a specific dynamic field
 def add_subfield(dynamic_field_index, subfield_label, subfield_input_type):
+    # Ensure subfields are initialized properly
+    if 'subfields' not in st.session_state.dynamic_fields[dynamic_field_index]:
+        st.session_state.dynamic_fields[dynamic_field_index]['subfields'] = []
+    
     subfield = {
         'label': subfield_label,
         'input_type': subfield_input_type,
@@ -60,9 +64,12 @@ with st.form("retirement_planning_form"):
         elif input_type == 'Number':
             st.number_input(field.get('label', 'No Label'), key=field.get('input_key'))
         
+        # Safeguard for subfields
+        subfields = field.get('subfields', [])
+
         # Sub-input fields
         st.write("Subfields:")
-        for subfield in field['subfields']:
+        for subfield in subfields:
             sub_input_type = subfield.get('input_type', 'Text')
             if sub_input_type == 'Text':
                 st.text_input(subfield.get('label', 'No Subfield Label'), key=subfield.get('input_key'))
@@ -109,5 +116,6 @@ if submit:
         st.write(f"**{field['label']}**: {st.session_state.get(field['input_key'], '')}")
         
         # Display subfield values
-        for subfield in field['subfields']:
+        subfields = field.get('subfields', [])
+        for subfield in subfields:
             st.write(f"**{subfield['label']}**: {st.session_state.get(subfield['input_key'], '')}")
