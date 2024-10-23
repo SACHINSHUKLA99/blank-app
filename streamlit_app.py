@@ -36,7 +36,7 @@ with st.form("retirement_planning_form"):
         inflation = st.number_input("Inflation Rate %", min_value=0.0, max_value=100.0, step=0.1, value=6.0)
 
     # Dynamic fields based on session state
-    st.subheader("Dynamic Fields")
+    st.subheader("Goals")
     
     # Updated snippet to safely handle dynamic fields
     for field in st.session_state.dynamic_fields:
