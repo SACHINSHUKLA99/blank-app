@@ -41,6 +41,23 @@ st.markdown("""
         transition: 0.3s;
     }
 
+    /* Yellow Submit Button Style */
+    .stForm > div > button {
+        background-color: #F8C13C;  /* Yellow background for submit button */
+        color: white;
+        border-radius: 8px;
+        border: none;
+        padding: 0.4rem 1.2rem;
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
+    .stForm > div > button:hover {
+        background-color: #FFB84D; /* Lighter yellow on hover */
+        color: black; /* Change text color on hover */
+        transition: 0.3s;
+    }
+
     /* Additional styles for improved readability */
     .stForm > div > div {
         padding: 1rem;
