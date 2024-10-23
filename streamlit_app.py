@@ -34,16 +34,22 @@ with st.form("retirement_planning_form"):
         risk_appetite = st.selectbox("Risk Appetite", ("Low", "Moderate", "High"))
         current_lumpsum = st.number_input("Current Lumpsum (₹ Savings/Investments)", min_value=0.0, step=1000.0)
         inflation = st.number_input("Inflation Rate %", min_value=0.0, max_value=100.0, step=0.1, value=6.0)
-    
+
     # Dynamic fields based on session state
     st.subheader("Dynamic Fields")
-    for field in st.session_state.dynamic_fields:
-        st.write(f"**{field['title']}**")
-        if field['input_type'] == 'Text':
-            st.text_input(field['label'], key=field['input_key'])
-        elif field['input_type'] == 'Number':
-            st.number_input(field['label'], key=field['input_key'])
     
+    # Updated snippet to safely handle dynamic fields
+    for field in st.session_state.dynamic_fields:
+        st.write(f"**{field.get('title', 'Untitled')}**")
+        
+        # Safely retrieve the input_type and handle errors
+        input_type = field.get('input_type', 'Text')  # Default to 'Text' if not present
+        
+        if input_type == 'Text':
+            st.text_input(field.get('label', 'No Label'), key=field.get('input_key'))
+        elif input_type == 'Number':
+            st.number_input(field.get('label', 'No Label'), key=field.get('input_key'))
+
     # Submit button
     submit = st.form_submit_button("Submit")
 
