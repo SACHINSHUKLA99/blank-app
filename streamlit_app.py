@@ -1,7 +1,7 @@
 import streamlit as st
 
 # Setting the title for the app
-st.title("Retrirement Plan")
+st.title("Retirement Plan")
 
 # Creating the form using streamlit form structure
 with st.form("retirement_plan_form"):
