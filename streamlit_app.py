@@ -141,23 +141,23 @@ if submit:
     monthly_swp = monthly_swp
     expectancy_life = expectancy_life
 
-    st.success("Form Submitted Successfully!")
-    st.write(f"**Current Age**: {current_age}")
-    st.write(f"**Present Portfolio**: ₹{present_portfolio}")
-    st.write(f"**Annual Inflation Rate**: {inflation_rate}")
-    st.write(f"**Expected Annual Returns**: {expected_returns}")
-    st.write(f"**Monthly SIP**: ₹{monthly_sip}")
-    st.write(f"**Monthly SWP**: ₹{monthly_swp}")
-    st.write(f"**Retirement Age**: {retirement_age}")
-    st.write(f"**Expenses**: ₹{expenses}")
-    st.write(f"**Expectancy Life**: {expectancy_life}")
+    # st.success("Form Submitted Successfully!")
+    # st.write(f"**Current Age**: {current_age}")
+    # st.write(f"**Present Portfolio**: ₹{present_portfolio}")
+    # st.write(f"**Annual Inflation Rate**: {inflation_rate}")
+    # st.write(f"**Expected Annual Returns**: {expected_returns}")
+    # st.write(f"**Monthly SIP**: ₹{monthly_sip}")
+    # st.write(f"**Monthly SWP**: ₹{monthly_swp}")
+    # st.write(f"**Retirement Age**: {retirement_age}")
+    # st.write(f"**Expenses**: ₹{expenses}")
+    # st.write(f"**Expectancy Life**: {expectancy_life}")
     
 
-    # Display dynamic field values
-    for field in st.session_state.dynamic_fields:
-        value1 = st.session_state.get(field['input_key_value1'], '')
-        value2 = st.session_state.get(field['input_key_value2'], '')
-        st.write(f"**{field['title']}**: Value 1 - {value1}, Value 2 - {value2}")
+    # # Display dynamic field values
+    # for field in st.session_state.dynamic_fields:
+    #     value1 = st.session_state.get(field['input_key_value1'], '')
+    #     value2 = st.session_state.get(field['input_key_value2'], '')
+    #     st.write(f"**{field['title']}**: Value 1 - {value1}, Value 2 - {value2}")
 
     # # Placeholder calculation logic for SIP and ROI
     # monthly_savings_needed = (expense_post_retirement - income) / (retirement_age - current_age) if retirement_age > current_age else 0
