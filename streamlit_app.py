@@ -115,8 +115,8 @@ with st.form("retirement_planning_form"):
 
 # Input to create new dynamic field
 st.subheader("Add Goals")
-custom_title = st.text_input("Enter Goal Title")
-custom_label = st.text_input("Enter Goal Name")
+custom_title = st.text_input("Enter Goal Name")
+custom_label = st.text_input("Value")
 
 # Button to add new dynamic field
 if st.button("Add Dynamic Field"):
