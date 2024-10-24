@@ -77,8 +77,17 @@ def add_dynamic_field(title):
     }
     st.session_state.dynamic_fields.append(new_field)
 
-# Title of the app
-st.title("Retirement Planning Form with Custom Dynamic Fields")
+# Input to create new dynamic field
+st.subheader("Add Goals")
+custom_title = st.text_input("Enter Goal Name")
+
+# Button to add new dynamic field
+if st.button("Add Goal"):
+    if custom_title:
+        add_dynamic_field(custom_title)
+        st.success(f"New field '{custom_title}' added. Please see the new field above.")
+    else:
+        st.warning("Please provide both a title and a label for the dynamic field!")
 
 # Main form layout with static inputs
 with st.form("retirement_planning_form"):
@@ -110,18 +119,6 @@ with st.form("retirement_planning_form"):
 
     # Submit button
     submit = st.form_submit_button("Submit")
-
-# Input to create new dynamic field
-st.subheader("Add Goals")
-custom_title = st.text_input("Enter Goal Name")
-
-# Button to add new dynamic field
-if st.button("Add Goal"):
-    if custom_title :
-        add_dynamic_field(custom_title)
-        st.success(f"New field '{custom_title}' added. Please see the new field above.")
-    else:
-        st.warning("Please provide both a title and a label for the dynamic field!")
 
 # After submission, display the entered data
 if submit:
