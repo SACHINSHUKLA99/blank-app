@@ -130,7 +130,6 @@ with st.form("retirement_planning_form"):
 
 # After submission, display the entered data
 if submit:
-    st.sidebar.title("Investment Calculator")
     monthly_sip = monthly_sip
     expected_returns = expected_returns
     inflation_rate = inflation_rate
