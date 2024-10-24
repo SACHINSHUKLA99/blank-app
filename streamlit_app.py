@@ -139,7 +139,7 @@ if st.session_state.page == 'form':
         # Submit button
         submit = st.form_submit_button("Submit")
 
-        if submitted:
+        if submit:
         # Store form data in st.session_state
             st.session_state['monthly_sip'] = monthly_sip
             st.session_state['expected_returns'] = expected_returns
