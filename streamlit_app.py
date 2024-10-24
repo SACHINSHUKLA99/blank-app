@@ -154,6 +154,7 @@ if st.session_state.page == 'form':
 # After submission, switch to results page
 if st.session_state.page == 'results':
     # Access the stored data
+    st.title("Analysis")
     monthly_sip = st.session_state['monthly_sip']
     expected_returns = st.session_state['expected_returns']
     inflation_rate = st.session_state['inflation_rate']
