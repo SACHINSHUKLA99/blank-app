@@ -153,6 +153,7 @@ if st.session_state.page == 'form':
 
             # Set the current page to 'results'
             st.session_state.page = 'results'
+            st.experimental_rerun()
 
 # After submission, switch to results page
 if st.session_state.page == 'results':
