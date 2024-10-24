@@ -89,6 +89,8 @@ if st.button("Add Goal"):
     else:
         st.warning("Please provide both a title and a label for the dynamic field!")
 
+# Title of the app
+st.title("Retirement Planning Form")
 # Main form layout with static inputs
 with st.form("retirement_planning_form"):
     # Create two columns for the static input fields
