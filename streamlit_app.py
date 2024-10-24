@@ -137,19 +137,34 @@ if st.session_state.page == 'form':
                 value2 = st.number_input(f"Value 2", key=field['input_key_value2'])
 
         # Submit button
-        submit = st.form_submit_button("Submit", on_click=show_results)
+        submit = st.form_submit_button("Submit")
+        if submitted:
+        # Store form data in st.session_state
+        st.session_state['monthly_sip'] = monthly_sip
+        st.session_state['expected_returns'] = expected_returns
+        st.session_state['inflation_rate'] = inflation_rate
+        st.session_state['current_age'] = current_age
+        st.session_state['retirement_age'] = retirement_age
+        st.session_state['current_valuation'] = present_portfolio
+        st.session_state['expenses'] = expenses
+        st.session_state['monthly_swp'] = monthly_swp
+        st.session_state['expectancy_life'] = expectancy_life
+
+        # Set the current page to 'results'
+        st.session_state.page = 'results'
 
 # After submission, switch to results page
 elif st.session_state.page == 'results':
-    monthly_sip = monthly_sip
-    expected_returns = expected_returns
-    inflation_rate = inflation_rate
-    current_age = current_age
-    retirement_age = retirement_age
-    current_valuation = present_portfolio
-    expenses = expenses
-    monthly_swp = monthly_swp
-    expectancy_life = expectancy_life
+    # Access the stored data
+    monthly_sip = st.session_state['monthly_sip']
+    expected_returns = st.session_state['expected_returns']
+    inflation_rate = st.session_state['inflation_rate']
+    current_age = st.session_state['current_age']
+    retirement_age = st.session_state['retirement_age']
+    current_valuation = st.session_state['current_valuation']
+    expenses = st.session_state['expenses']
+    monthly_swp = st.session_state['monthly_swp']
+    expectancy_life = st.session_state['expectancy_life']
 
     # st.success("Form Submitted Successfully!")
     # st.write(f"**Current Age**: {current_age}")
