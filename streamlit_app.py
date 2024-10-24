@@ -135,7 +135,7 @@ if st.session_state.page == 'form':
             st.session_state.form_monthly_swp = st.number_input("Monthly SWP", min_value=0, step=1000, value=50000)
             st.session_state.form_expenses = st.text_input("Expenses (e.g., {30:500000, 35:10000000})", "{35:5000000, 40:50000000}")
             st.session_state.form_retirement_age = st.number_input("Retirement Age", min_value=1, max_value=120, step=1)
-            st.session_state.form_expectancy_life = st.number_input("Expectancy Life", min_value=retirement_age, max_value=100, value=80)
+            st.session_state.form_expectancy_life = st.number_input("Expectancy Life", min_value=1, max_value=100, value=80)
 
         # Dynamic fields based on session state
         st.subheader("Goals")
