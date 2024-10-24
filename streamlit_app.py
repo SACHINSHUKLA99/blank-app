@@ -124,18 +124,18 @@ if st.session_state.page == 'form':
 
         # First column (left side) - static fields
         with col1:
-            current_age = st.number_input("Current Age", min_value=1, max_value=120, step=1)
-            present_portfolio = st.number_input("Present Portfolio (₹)", min_value=1, step=1)
-            inflation_rate = st.number_input("Annual Inflation Rate (%)", min_value=0.0, max_value=20.0, value=7.0) / 100
-            expected_returns = st.number_input("Expected Annual Returns", min_value=0.0, max_value=100.0, value=15.0) / 100
+            st.session_state.form_current_age = st.number_input("Current Age", min_value=1, max_value=120, step=1)
+            st.session_state.form_present_portfolio = st.number_input("Present Portfolio (₹)", min_value=1, step=1)
+            st.session_state.form_inflation_rate = st.number_input("Annual Inflation Rate (%)", min_value=0.0, max_value=20.0, value=7.0) / 100
+            st.session_state.form_expected_returns = st.number_input("Expected Annual Returns", min_value=0.0, max_value=100.0, value=15.0) / 100
 
         # Second column (right side) - static fields
         with col2:
-            monthly_sip = st.number_input("Monthly SIP", min_value=0, step=1000, value=51000)
-            monthly_swp = st.number_input("Monthly SWP", min_value=0, step=1000, value=50000)
-            expenses = st.text_input("Expenses (e.g., {30:500000, 35:10000000})", "{35:5000000, 40:50000000}")
-            retirement_age = st.number_input("Retirement Age", min_value=1, max_value=120, step=1)
-            expectancy_life = st.number_input("Expectancy Life", min_value=retirement_age, max_value=100, value=80)
+            st.session_state.form_monthly_sip = st.number_input("Monthly SIP", min_value=0, step=1000, value=51000)
+            st.session_state.form_monthly_swp = st.number_input("Monthly SWP", min_value=0, step=1000, value=50000)
+            st.session_state.form_expenses = st.text_input("Expenses (e.g., {30:500000, 35:10000000})", "{35:5000000, 40:50000000}")
+            st.session_state.form_retirement_age = st.number_input("Retirement Age", min_value=1, max_value=120, step=1)
+            st.session_state.form_expectancy_life = st.number_input("Expectancy Life", min_value=retirement_age, max_value=100, value=80)
 
         # Dynamic fields based on session state
         st.subheader("Goals")
