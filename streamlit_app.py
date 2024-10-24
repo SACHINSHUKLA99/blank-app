@@ -72,6 +72,10 @@ st.markdown("""
 if 'dynamic_fields' not in st.session_state:
     st.session_state.dynamic_fields = []
 
+
+if 'page' not in st.session_state:
+    st.session_state.page = 'form'  # Initialize the page state
+
 # Function to add a new dynamic field with two input keys (value1 and value2)
 def add_dynamic_field(title):
     new_field = {
@@ -81,55 +85,62 @@ def add_dynamic_field(title):
     }
     st.session_state.dynamic_fields.append(new_field)
 
-# Input to create new dynamic field
-st.subheader("Add Goals")
-custom_title = st.text_input("Enter Goal Name")
 
-# Button to add new dynamic field
-if st.button("Add Goal"):
-    if custom_title:
-        add_dynamic_field(custom_title)
-    else:
-        st.warning("Please provide both a title and a label for the dynamic field!")
+# Function to switch to the results page
+def show_results():
+    st.session_state.page = 'results'
 
-# Title of the app
-st.title("Retirement Planning Form")
-# Main form layout with static inputs
-with st.form("retirement_planning_form"):
-    # Create two columns for the static input fields
-    col1, col2 = st.columns(2)
+if st.session_state.page == 'form':
 
-    # First column (left side) - static fields
-    with col1:
-        current_age = st.number_input("Current Age", min_value=1, max_value=120, step=1)
-        present_portfolio = st.number_input("Present Portfolio (₹)", min_value=1, step=1)
-        inflation_rate = st.number_input("Annual Inflation Rate (%)", min_value=0.0, max_value=20.0, value=7.0) / 100
-        expected_returns = st.number_input("Expected Annual Returns", min_value=0.0, max_value=100.0, value=15.0) / 100
+    # Input to create new dynamic field
+    st.subheader("Add Goals")
+    custom_title = st.text_input("Enter Goal Name")
 
-    # Second column (right side) - static fields
-    with col2:
-        monthly_sip = st.number_input("Monthly SIP", min_value=0, step=1000, value=51000)
-        monthly_swp = st.number_input("Monthly SWP", min_value=0, step=1000, value=50000)
-        expenses = st.text_input("Expenses (e.g., {30:500000, 35:10000000})", "{35:5000000, 40:50000000}")
-        retirement_age = st.number_input("Retirement Age", min_value=1, max_value=120, step=1)
-        expectancy_life = st.number_input("Expectancy Life", min_value=retirement_age, max_value=100, value=80)
+    # Button to add new dynamic field
+    if st.button("Add Goal"):
+        if custom_title:
+            add_dynamic_field(custom_title)
+        else:
+            st.warning("Please provide both a title and a label for the dynamic field!")
 
-    # Dynamic fields based on session state
-    st.subheader("Goals")
-    dynamic_col1, dynamic_col2 = st.columns(2)  # Create two columns for dynamic fields
-    
-    # Loop through dynamic fields and display them in two columns
-    for i, field in enumerate(st.session_state.dynamic_fields):
-        with dynamic_col1 if i % 2 == 0 else dynamic_col2:
-            st.write(f"**{field.get('title', 'Untitled')}**")
-            value1 = st.number_input(f"Value 1", key=field['input_key_value1'])
-            value2 = st.number_input(f"Value 2", key=field['input_key_value2'])
+    # Title of the app
+    st.title("Retirement Planning Form")
+    # Main form layout with static inputs
+    with st.form("retirement_planning_form"):
+        # Create two columns for the static input fields
+        col1, col2 = st.columns(2)
 
-    # Submit button
-    submit = st.form_submit_button("Submit")
+        # First column (left side) - static fields
+        with col1:
+            current_age = st.number_input("Current Age", min_value=1, max_value=120, step=1)
+            present_portfolio = st.number_input("Present Portfolio (₹)", min_value=1, step=1)
+            inflation_rate = st.number_input("Annual Inflation Rate (%)", min_value=0.0, max_value=20.0, value=7.0) / 100
+            expected_returns = st.number_input("Expected Annual Returns", min_value=0.0, max_value=100.0, value=15.0) / 100
 
-# After submission, display the entered data
-if submit:
+        # Second column (right side) - static fields
+        with col2:
+            monthly_sip = st.number_input("Monthly SIP", min_value=0, step=1000, value=51000)
+            monthly_swp = st.number_input("Monthly SWP", min_value=0, step=1000, value=50000)
+            expenses = st.text_input("Expenses (e.g., {30:500000, 35:10000000})", "{35:5000000, 40:50000000}")
+            retirement_age = st.number_input("Retirement Age", min_value=1, max_value=120, step=1)
+            expectancy_life = st.number_input("Expectancy Life", min_value=retirement_age, max_value=100, value=80)
+
+        # Dynamic fields based on session state
+        st.subheader("Goals")
+        dynamic_col1, dynamic_col2 = st.columns(2)  # Create two columns for dynamic fields
+        
+        # Loop through dynamic fields and display them in two columns
+        for i, field in enumerate(st.session_state.dynamic_fields):
+            with dynamic_col1 if i % 2 == 0 else dynamic_col2:
+                st.write(f"**{field.get('title', 'Untitled')}**")
+                value1 = st.number_input(f"Value 1", key=field['input_key_value1'])
+                value2 = st.number_input(f"Value 2", key=field['input_key_value2'])
+
+        # Submit button
+        submit = st.form_submit_button("Submit", on_click=show_results)
+
+# After submission, switch to results page
+elif st.session_state.page == 'results':
     monthly_sip = monthly_sip
     expected_returns = expected_returns
     inflation_rate = inflation_rate
