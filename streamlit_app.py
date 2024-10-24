@@ -116,7 +116,7 @@ st.subheader("Add Goals")
 custom_title = st.text_input("Enter Goal Name")
 
 # Button to add new dynamic field
-if st.button("Add Dynamic Field"):
+if st.button("Add Goal"):
     if custom_title :
         add_dynamic_field(custom_title)
     else:
@@ -136,4 +136,4 @@ if submit:
     # Display dynamic field values
     st.write("### Dynamic Field Inputs")
     for field in st.session_state.dynamic_fields:
-        st.write(f"**{field['label']}**: {st.session_state.get(field['input_key'], '')}")
+        st.write(f"**{field['title']}**: {st.session_state.get(field['input_key'], '')}")
