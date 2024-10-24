@@ -110,7 +110,7 @@ with st.form("retirement_planning_form"):
     with col2:
         monthly_sip = st.number_input("Monthly SIP", min_value=0, step=1000, value=51000)
         monthly_swp = st.number_input("Monthly SWP", min_value=0, step=1000, value=50000)
-        expenses = st.number_input("Expenses", min_value=1000, step=1)
+        expenses = str.text_input("Expenses (e.g., {30:500000, 35:10000000})", "{35:5000000, 40:50000000}")
         retirement_age = st.number_input("Retirement Age", min_value=1, max_value=120, step=1)
         expectancy_life = st.number_input("Expectancy Life", min_value=retirement_age, max_value=100, value=80)
 
