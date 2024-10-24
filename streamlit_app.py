@@ -154,9 +154,11 @@ if st.session_state.page == 'form':
             # Set the current page to 'results'
             st.session_state.page = 'results'
             st.experimental_rerun()
+            st.experimental_rerun()
 
 # After submission, switch to results page
 if st.session_state.page == 'results':
+    st.title("Analysis")
     # Access the stored data
     monthly_sip = st.session_state['monthly_sip']
     expected_returns = st.session_state['expected_returns']
