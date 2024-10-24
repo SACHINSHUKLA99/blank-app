@@ -106,7 +106,6 @@ with st.form("retirement_planning_form"):
     # Loop through dynamic fields and display them in two columns
     for i, field in enumerate(st.session_state.dynamic_fields):
         with dynamic_col1 if i % 2 == 0 else dynamic_col2:
-            st.write(f"**{field.get('title', 'Untitled')}**")
             st.number_input(field.get('title', 'No Label'), key=field.get('input_key'))
 
     # Submit button
