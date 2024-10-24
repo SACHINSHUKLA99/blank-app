@@ -143,11 +143,11 @@ if submit:
     st.write(f"**Current Age**: {current_age}")
     st.write(f"**Present Portfolio**: ₹{present_portfolio}")
     st.write(f"**Annual Inflation Rate**: {inflation_rate}")
-    st.write(f"**Expected Annual Returns**: ₹{expected_returns}")
+    st.write(f"**Expected Annual Returns**: {expected_returns}")
     st.write(f"**Monthly SIP**: ₹{monthly_sip}")
-    st.write(f"**Monthly SWP**: {monthly_swp}")
+    st.write(f"**Monthly SWP**: ₹{monthly_swp}")
     st.write(f"**Retirement Age**: {retirement_age}")
-    st.write(f"**Expenses**: {expenses}")
+    st.write(f"**Expenses**: ₹{expenses}")
     st.write(f"**Expectancy Life**: {expectancy_life}")
     
 
