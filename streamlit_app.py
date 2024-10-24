@@ -76,6 +76,7 @@ def add_dynamic_field(title):
         'input_key': f"input_{len(st.session_state.dynamic_fields)}"
     }
     st.session_state.dynamic_fields.append(new_field)
+    st.experimental_rerun()
 
 # Title of the app
 st.title("Retirement Planning Form with Custom Dynamic Fields")
