@@ -138,23 +138,24 @@ if st.session_state.page == 'form':
 
         # Submit button
         submit = st.form_submit_button("Submit")
+
         if submitted:
         # Store form data in st.session_state
-        st.session_state['monthly_sip'] = monthly_sip
-        st.session_state['expected_returns'] = expected_returns
-        st.session_state['inflation_rate'] = inflation_rate
-        st.session_state['current_age'] = current_age
-        st.session_state['retirement_age'] = retirement_age
-        st.session_state['current_valuation'] = present_portfolio
-        st.session_state['expenses'] = expenses
-        st.session_state['monthly_swp'] = monthly_swp
-        st.session_state['expectancy_life'] = expectancy_life
+            st.session_state['monthly_sip'] = monthly_sip
+            st.session_state['expected_returns'] = expected_returns
+            st.session_state['inflation_rate'] = inflation_ratea
+            st.session_state['current_age'] = current_age
+            st.session_state['retirement_age'] = retirement_age
+            st.session_state['current_valuation'] = present_portfolio
+            st.session_state['expenses'] = expenses
+            st.session_state['monthly_swp'] = monthly_swp
+            st.session_state['expectancy_life'] = expectancy_life
 
-        # Set the current page to 'results'
-        st.session_state.page = 'results'
+            # Set the current page to 'results'
+            st.session_state.page = 'results'
 
 # After submission, switch to results page
-elif st.session_state.page == 'results':
+if st.session_state.page == 'results':
     # Access the stored data
     monthly_sip = st.session_state['monthly_sip']
     expected_returns = st.session_state['expected_returns']
