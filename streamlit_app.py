@@ -76,6 +76,22 @@ if 'dynamic_fields' not in st.session_state:
 if 'page' not in st.session_state:
     st.session_state.page = 'form'  # Initialize the page state
 
+
+def handle_form_submit():
+    # Store form data in st.session_state
+    st.session_state['monthly_sip'] = st.session_state.form_monthly_sip
+    st.session_state['expected_returns'] = st.session_state.form_expected_returns
+    st.session_state['inflation_rate'] = st.session_state.form_inflation_rate
+    st.session_state['current_age'] = st.session_state.form_current_age
+    st.session_state['retirement_age'] = st.session_state.form_retirement_age
+    st.session_state['current_valuation'] = st.session_state.form_present_portfolio
+    st.session_state['expenses'] = st.session_state.form_expenses
+    st.session_state['monthly_swp'] = st.session_state.form_monthly_swp
+    st.session_state['expectancy_life'] = st.session_state.form_expectancy_life
+
+    # Change the page state to 'results'
+    st.session_state.page = 'results'
+
 # Function to add a new dynamic field with two input keys (value1 and value2)
 def add_dynamic_field(title):
     new_field = {
@@ -85,10 +101,6 @@ def add_dynamic_field(title):
     }
     st.session_state.dynamic_fields.append(new_field)
 
-
-# Function to switch to the results page
-def show_results():
-    st.session_state.page = 'results'
 
 if st.session_state.page == 'form':
 
@@ -137,27 +149,10 @@ if st.session_state.page == 'form':
                 value2 = st.number_input(f"Value 2", key=field['input_key_value2'])
 
         # Submit button
-        submit = st.form_submit_button("Submit")
-
-        if submit:
-        # Store form data in st.session_state
-            st.session_state['monthly_sip'] = monthly_sip
-            st.session_state['expected_returns'] = expected_returns
-            st.session_state['inflation_rate'] = inflation_rate
-            st.session_state['current_age'] = current_age
-            st.session_state['retirement_age'] = retirement_age
-            st.session_state['current_valuation'] = present_portfolio
-            st.session_state['expenses'] = expenses
-            st.session_state['monthly_swp'] = monthly_swp
-            st.session_state['expectancy_life'] = expectancy_life
-
-            # Set the current page to 'results'
-            st.session_state.page = 'results'
-            st.experimental_rerun()
+        submitted = st.form_submit_button("Submit", on_click=handle_form_submit)
 
 # After submission, switch to results page
 if st.session_state.page == 'results':
-    st.title("Analysis")
     # Access the stored data
     monthly_sip = st.session_state['monthly_sip']
     expected_returns = st.session_state['expected_returns']
