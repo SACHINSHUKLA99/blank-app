@@ -1,7 +1,9 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
-import numpy as np
+
+# Set initial state for form submission and goal adding
+if 'form_submitted' not in st.session_state:
+    st.session_state.form_submitted = False
 
 # Inject custom CSS for styling
 st.markdown("""
@@ -81,55 +83,61 @@ def add_dynamic_field(title):
     }
     st.session_state.dynamic_fields.append(new_field)
 
-# Input to create new dynamic field
-st.subheader("Add Goals")
-custom_title = st.text_input("Enter Goal Name")
 
-# Button to add new dynamic field
-if st.button("Add Goal"):
-    if custom_title:
-        add_dynamic_field(custom_title)
-    else:
-        st.warning("Please provide both a title and a label for the dynamic field!")
+if not st.session_state.form_submitted:
+    # Input to create new dynamic field
+    st.subheader("Add Goals")
+    custom_title = st.text_input("Enter Goal Name")
 
-# Title of the app
-st.title("Retirement Planning Form")
-# Main form layout with static inputs
-with st.form("retirement_planning_form"):
-    # Create two columns for the static input fields
-    col1, col2 = st.columns(2)
+    # Button to add new dynamic field
+    if st.button("Add Goal"):
+        if custom_title:
+            add_dynamic_field(custom_title)
+        else:
+            st.warning("Please provide both a title and a label for the dynamic field!")
 
-    # First column (left side) - static fields
-    with col1:
-        current_age = st.number_input("Current Age", min_value=1, max_value=120, step=1)
-        present_portfolio = st.number_input("Present Portfolio (₹)", min_value=1, step=1)
-        inflation_rate = st.number_input("Annual Inflation Rate (%)", min_value=0.0, max_value=20.0, value=7.0) / 100
-        expected_returns = st.number_input("Expected Annual Returns", min_value=0.0, max_value=100.0, value=15.0) / 100
+if not st.session_state.form_submitted:
+    # Title of the app
+    st.title("Retirement Planning Form")
+    # Main form layout with static inputs
+    with st.form("retirement_planning_form"):
+        # Create two columns for the static input fields
+        col1, col2 = st.columns(2)
 
-    # Second column (right side) - static fields
-    with col2:
-        monthly_sip = st.number_input("Monthly SIP", min_value=0, step=1000, value=51000)
-        monthly_swp = st.number_input("Monthly SWP", min_value=0, step=1000, value=50000)
-        expenses = st.text_input("Expenses (e.g., {30:500000, 35:10000000})", "{35:5000000, 40:50000000}")
-        retirement_age = st.number_input("Retirement Age", min_value=1, max_value=120, step=1)
-        expectancy_life = st.number_input("Expectancy Life", min_value=retirement_age, max_value=100, value=80)
+        # First column (left side) - static fields
+        with col1:
+            current_age = st.number_input("Current Age", min_value=1, max_value=120, step=1)
+            present_portfolio = st.number_input("Present Portfolio (₹)", min_value=1, step=1)
+            inflation_rate = st.number_input("Annual Inflation Rate (%)", min_value=0.0, max_value=20.0, value=7.0) / 100
+            expected_returns = st.number_input("Expected Annual Returns", min_value=0.0, max_value=100.0, value=15.0) / 100
 
-    # Dynamic fields based on session state
-    st.subheader("Goals")
-    dynamic_col1, dynamic_col2 = st.columns(2)  # Create two columns for dynamic fields
-    
-    # Loop through dynamic fields and display them in two columns
-    for i, field in enumerate(st.session_state.dynamic_fields):
-        with dynamic_col1 if i % 2 == 0 else dynamic_col2:
-            st.write(f"**{field.get('title', 'Untitled')}**")
-            value1 = st.number_input(f"Value 1", key=field['input_key_value1'])
-            value2 = st.number_input(f"Value 2", key=field['input_key_value2'])
+        # Second column (right side) - static fields
+        with col2:
+            monthly_sip = st.number_input("Monthly SIP", min_value=0, step=1000, value=51000)
+            monthly_swp = st.number_input("Monthly SWP", min_value=0, step=1000, value=50000)
+            expenses = st.number_input("Expenses", min_value=1000, step=1)
+            retirement_age = st.number_input("Retirement Age", min_value=1, max_value=120, step=1)
+            expectancy_life = st.number_input("Expectancy Life", min_value=retirement_age, max_value=100, value=80)
 
-    # Submit button
-    submit = st.form_submit_button("Submit")
+        # Dynamic fields based on session state
+        st.subheader("Goals")
+        dynamic_col1, dynamic_col2 = st.columns(2)  # Create two columns for dynamic fields
+        
+        # Loop through dynamic fields and display them in two columns
+        for i, field in enumerate(st.session_state.dynamic_fields):
+            with dynamic_col1 if i % 2 == 0 else dynamic_col2:
+                st.write(f"**{field.get('title', 'Untitled')}**")
+                value1 = st.number_input(f"Value 1", key=field['input_key_value1'])
+                value2 = st.number_input(f"Value 2", key=field['input_key_value2'])
+
+        # Submit button
+        submit = st.form_submit_button("Submit")
+        if submit:
+            st.session_state.form_submitted = True
+            st.success("Form submitted successfully! Data is being processed...")
 
 # After submission, display the entered data
-if submit:
+if st.session_state.form_submitted:
     monthly_sip = monthly_sip
     expected_returns = expected_returns
     inflation_rate = inflation_rate
@@ -140,23 +148,23 @@ if submit:
     monthly_swp = monthly_swp
     expectancy_life = expectancy_life
 
-    # st.success("Form Submitted Successfully!")
-    # st.write(f"**Current Age**: {current_age}")
-    # st.write(f"**Present Portfolio**: ₹{present_portfolio}")
-    # st.write(f"**Annual Inflation Rate**: {inflation_rate}")
-    # st.write(f"**Expected Annual Returns**: {expected_returns}")
-    # st.write(f"**Monthly SIP**: ₹{monthly_sip}")
-    # st.write(f"**Monthly SWP**: ₹{monthly_swp}")
-    # st.write(f"**Retirement Age**: {retirement_age}")
-    # st.write(f"**Expenses**: ₹{expenses}")
-    # st.write(f"**Expectancy Life**: {expectancy_life}")
+    st.success("Form Submitted Successfully!")
+    st.write(f"**Current Age**: {current_age}")
+    st.write(f"**Present Portfolio**: ₹{present_portfolio}")
+    st.write(f"**Annual Inflation Rate**: {inflation_rate}")
+    st.write(f"**Expected Annual Returns**: {expected_returns}")
+    st.write(f"**Monthly SIP**: ₹{monthly_sip}")
+    st.write(f"**Monthly SWP**: ₹{monthly_swp}")
+    st.write(f"**Retirement Age**: {retirement_age}")
+    st.write(f"**Expenses**: ₹{expenses}")
+    st.write(f"**Expectancy Life**: {expectancy_life}")
     
 
-    # # Display dynamic field values
-    # for field in st.session_state.dynamic_fields:
-    #     value1 = st.session_state.get(field['input_key_value1'], '')
-    #     value2 = st.session_state.get(field['input_key_value2'], '')
-    #     st.write(f"**{field['title']}**: Value 1 - {value1}, Value 2 - {value2}")
+    # Display dynamic field values
+    for field in st.session_state.dynamic_fields:
+        value1 = st.session_state.get(field['input_key_value1'], '')
+        value2 = st.session_state.get(field['input_key_value2'], '')
+        st.write(f"**{field['title']}**: Value 1 - {value1}, Value 2 - {value2}")
 
     # # Placeholder calculation logic for SIP and ROI
     # monthly_savings_needed = (expense_post_retirement - income) / (retirement_age - current_age) if retirement_age > current_age else 0
@@ -168,6 +176,9 @@ if submit:
     #     "Value": [f"{monthly_savings_needed:,.2f}", f"{estimated_roi * 100:.2f}%"]
     # })
 
+    # # Display the calculated results
+    # st.write("## Calculated Results")
+    # st.table(results)
     # Convert the expenses input to a dictionary
     expenses_dict = eval(expenses)
 
@@ -236,6 +247,11 @@ if submit:
 
     # infotext = " Below is the recomended combination you can try to get a return of " + str(expected_returns * 100) + " Percent returns:" 
     # st.info(infotext, icon="ℹ️")
+
+
+    import matplotlib.pyplot as plt
+    import numpy as np
+    import streamlit as st
 
     fig, ax = plt.subplots(figsize=(6, 3), subplot_kw=dict(aspect="equal"))
 
@@ -346,4 +362,3 @@ if submit:
 
         with st.expander("Best Performing Balanced/Equity-Oriented Hybrid Funds"):
             st.table(balanced_data)
-
