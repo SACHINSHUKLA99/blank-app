@@ -88,6 +88,15 @@ def add_dynamic_field(title):
 
 # Function to switch to the results page
 def show_results():
+    monthly_sip = monthly_sip
+    expected_returns = expected_returns
+    inflation_rate = inflation_rate
+    current_age = current_age
+    retirement_age = retirement_age
+    current_valuation = present_portfolio
+    expenses = expenses
+    monthly_swp = monthly_swp
+    expectancy_life = expectancy_life
     st.session_state.page = 'results'
 
 if st.session_state.page == 'form':
