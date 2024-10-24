@@ -1,7 +1,5 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
 
 # Inject custom CSS for styling
 st.markdown("""
@@ -68,11 +66,9 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Initialize the session state to control form visibility and dynamic fields
+# Initialize the session state to store dynamic fields if it's not already present
 if 'dynamic_fields' not in st.session_state:
     st.session_state.dynamic_fields = []
-if 'form_submitted' not in st.session_state:
-    st.session_state.form_submitted = False
 
 # Function to add a new dynamic field with two input keys (value1 and value2)
 def add_dynamic_field(title):
@@ -91,115 +87,86 @@ custom_title = st.text_input("Enter Goal Name")
 if st.button("Add Goal"):
     if custom_title:
         add_dynamic_field(custom_title)
-        st.success(f"New field '{custom_title}' added. Please see the new field above.")
     else:
         st.warning("Please provide both a title and a label for the dynamic field!")
 
 # Title of the app
 st.title("Retirement Planning Form")
+# Main form layout with static inputs
+with st.form("retirement_planning_form"):
+    # Create two columns for the static input fields
+    col1, col2 = st.columns(2)
 
-# Show form only if not submitted
-if not st.session_state.form_submitted:
-    # Main form layout with static inputs
-    with st.form("retirement_planning_form"):
-        # Create two columns for the static input fields
-        col1, col2 = st.columns(2)
+    # First column (left side) - static fields
+    with col1:
+        current_age = st.number_input("Current Age", min_value=1, max_value=120, step=1)
+        present_portfolio = st.number_input("Present Portfolio (₹)", min_value=1, step=1)
+        inflation_rate = st.number_input("Annual Inflation Rate (%)", min_value=0.0, max_value=20.0, value=7.0) / 100
+        expected_returns = st.number_input("Expected Annual Returns", min_value=0.0, max_value=100.0, value=15.0) / 100
 
-        # First column (left side) - static fields
-        with col1:
-            current_age = st.number_input("Current Age", min_value=1, max_value=120, step=1)
-            present_portfolio = st.number_input("Present Portfolio (₹)", min_value=1, step=1)
-            income = st.number_input("Income (₹)", min_value=1, step=1)
-            current_expenditure = st.number_input("Upfront Investment (₹)", min_value=0.0, step=1000.0)
+    # Second column (right side) - static fields
+    with col2:
+        monthly_sip = st.number_input("Monthly SIP", min_value=0, step=1000, value=51000)
+        monthly_swp = st.number_input("Monthly SWP", min_value=0, step=1000, value=50000)
+        expenses = st.number_input("Expenses", min_value=1000, step=1)
+        retirement_age = st.number_input("Retirement Age", min_value=1, max_value=120, step=1)
+        expectancy_life = st.number_input("Expectancy Life", min_value=retirement_age, max_value=100, value=80)
 
-        # Second column (right side) - static fields
-        with col2:
-            expense_post_retirement = st.number_input("Expense Post Retirement (₹)", min_value=1000, step=1)
-            house_expense = st.number_input("House Expense (at 30) (₹)", min_value=1000, step=1)
-            expenses = st.number_input("Expenses", min_value=1000, step=1)
-            retirement_age = st.number_input("Retirement Age", min_value=1, max_value=120, step=1)
-
-        # Dynamic fields based on session state
-        st.subheader("Goals")
-        dynamic_col1, dynamic_col2 = st.columns(2)  # Create two columns for dynamic fields
-        
-        # Loop through dynamic fields and display them in two columns
-        for i, field in enumerate(st.session_state.dynamic_fields):
-            with dynamic_col1 if i % 2 == 0 else dynamic_col2:
-                value1 = st.number_input(f"Value 1 for {field['title']}", key=field['input_key_value1'])
-                value2 = st.number_input(f"Value 2 for {field['title']}", key=field['input_key_value2'])
-
-        # Submit button
-        submit = st.form_submit_button("Submit")
-else:
-    # This code will execute when the form is submitted
-    st.success("Form submitted successfully!")
-
-# After submission, display the calculations and results
-if submit:
-    # Set the form submitted state to True
-    st.session_state.form_submitted = True
+    # Dynamic fields based on session state
+    st.subheader("Goals")
+    dynamic_col1, dynamic_col2 = st.columns(2)  # Create two columns for dynamic fields
     
-    # Converting expenses input to a dictionary (modify as necessary)
-    expenses_dict = {current_age + i: expenses for i in range(0, retirement_age - current_age)}
+    # Loop through dynamic fields and display them in two columns
+    for i, field in enumerate(st.session_state.dynamic_fields):
+        with dynamic_col1 if i % 2 == 0 else dynamic_col2:
+            st.write(f"**{field.get('title', 'Untitled')}**")
+            value1 = st.number_input(f"Value 1", key=field['input_key_value1'])
+            value2 = st.number_input(f"Value 2", key=field['input_key_value2'])
 
-    # Calculate the corpus for each year
-    start_year = 2024  # Assuming the current year is 2024
-    expectancy_life = 85  # Set life expectancy here
-    years = range(start_year, start_year + expectancy_life - current_age + 1)
-    corpus = [present_portfolio]
-    sip_corpus = [0] * len(years)
-    swp_corpus = [0] * len(years)
-    invested_sum = 0
-    withdrawn_sum = 0
+    # Submit button
+    submit = st.form_submit_button("Submit")
 
-    expected_returns = 0.08  # Assuming 8% annual return on investment
-    monthly_sip = 10000  # Set this according to your inputs
-    monthly_swp = 0  # Modify as needed
-    inflation_rate = 0.03  # Assuming 3% annual inflation rate
+# After submission, display the entered data
+if submit:
+    st.sidebar.title("Investment Calculator")
+    monthly_sip = monthly_sip
+    expected_returns = expected_returns
+    inflation_rate = inflation_rate
+    current_age = current_age
+    retirement_age = retirement_age
+    current_valuation = present_portfolio
+    expenses = expenses
+    monthly_swp = monthly_swp
+    expectancy_life = expectancy_life
 
-    # Loop through each year and calculate corpus, SIP, SWP, and expenses
-    for i, year in enumerate(years):
-        age = current_age + (year - start_year)
-        
-        # Apply SIP if the user is below retirement age
-        if age < retirement_age:
-            # Monthly SIP with annual returns
-            invested_sum += monthly_sip * 12 * (1 + inflation_rate)**(year - start_year)
-            corpus[-1] *= (1 + expected_returns)  # Apply returns on existing corpus
-            corpus[-1] += monthly_sip * 12 * (1 + inflation_rate)**(year - start_year)  # Add SIP
-        else:
-            # Monthly SWP if the user has retired
-            withdrawn_sum += monthly_swp * 12 * (1 + inflation_rate)**(year - start_year)
-            corpus[-1] *= (1 + expected_returns)  # Apply returns on existing corpus
-            corpus[-1] -= monthly_swp * 12 * (1 + inflation_rate)**(year - start_year)  # Deduct SWP
-            
-        # Deduct any specified expenses for the year
-        if age in expenses_dict:
-            corpus[-1] -= expenses_dict[age] * (1 + inflation_rate)**(year - start_year)
+    st.success("Form Submitted Successfully!")
+    st.write(f"**Current Age**: {current_age}")
+    st.write(f"**Present Portfolio**: ₹{present_portfolio}")
+    st.write(f"**Annual Inflation Rate**: {inflation_rate}")
+    st.write(f"**Expected Annual Returns**: {expected_returns}")
+    st.write(f"**Monthly SIP**: ₹{monthly_sip}")
+    st.write(f"**Monthly SWP**: ₹{monthly_swp}")
+    st.write(f"**Retirement Age**: {retirement_age}")
+    st.write(f"**Expenses**: ₹{expenses}")
+    st.write(f"**Expectancy Life**: {expectancy_life}")
+    
 
-        # Prevent corpus from going below zero
-        corpus[-1] = max(corpus[-1], 0)
-        
-        # Add current values to the corpus list for the next iteration
-        corpus.append(corpus[-1])
-        sip_corpus[i] = invested_sum
-        swp_corpus[i] = withdrawn_sum
+    # Display dynamic field values
+    for field in st.session_state.dynamic_fields:
+        value1 = st.session_state.get(field['input_key_value1'], '')
+        value2 = st.session_state.get(field['input_key_value2'], '')
+        st.write(f"**{field['title']}**: Value 1 - {value1}, Value 2 - {value2}")
 
-    # Create the data frame for the chart
-    data = pd.DataFrame({
-        'Year': years,
-        'Corpus': corpus[:-1],  # Last value is extra
-        'Invested Sum': sip_corpus,
-        'Withdrawn Sum': swp_corpus
-    })
+    # # Placeholder calculation logic for SIP and ROI
+    # monthly_savings_needed = (expense_post_retirement - income) / (retirement_age - current_age) if retirement_age > current_age else 0
+    # estimated_roi = 0.08  # Assuming 8% annual return on investment
+    
+    # # Create a DataFrame to show results as a table
+    # results = pd.DataFrame({
+    #     "Metric": ["SIP Amount (₹)", "Estimated ROI (%)"],
+    #     "Value": [f"{monthly_savings_needed:,.2f}", f"{estimated_roi * 100:.2f}%"]
+    # })
 
-    # Create the line chart using st.line_chart
-    st.line_chart(data.set_index('Year'))
-
-    # Get the values for retirement age and death year
-    retirement_index = retirement_age - current_age
-    death_index = expectancy_life - current_age
-    summary_data = {
-        'Description': ['Corpus at Retirement', 'Total Invested Amount', 'Emergency funds at age'],
-        'Value': ["Rs {:.0f}".format(corpus[retirement_index]), "Rs {:.0f}".format(sip_corpus[retirement
+    # # Display the calculated results
+    # st.write("## Calculated Results")
+    # st.table(results)
