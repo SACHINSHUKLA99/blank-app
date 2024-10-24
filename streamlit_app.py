@@ -101,15 +101,16 @@ with st.form("retirement_planning_form"):
     with col1:
         current_age = st.number_input("Current Age", min_value=1, max_value=120, step=1)
         present_portfolio = st.number_input("Present Portfolio (₹)", min_value=1, step=1)
-        income = st.number_input("Income (₹)", min_value=1, step=1)
-        current_expenditure = st.number_input("Upfront Investment (₹)", min_value=0.0, step=1000.0)
+        inflation_rate = st.number_input("Annual Inflation Rate (%)", min_value=0.0, max_value=20.0, value=7.0) / 100
+        expected_returns = st.number_input("Expected Annual Returns", min_value=0.0, max_value=100.0, value=15.0) / 100
 
     # Second column (right side) - static fields
     with col2:
-        expense_post_retirement = st.number_input("Expense Post Retirement (₹)", min_value=1000, step=1)
-        house_expense = st.number_input("House Expense (at 30) (₹)", min_value=1000, step=1)
+        monthly_sip = st.number_input("Monthly SIP", min_value=0, step=1000, value=51000)
+        monthly_swp = st.number_input("Monthly SWP", min_value=0, step=1000, value=50000)
         expenses = st.number_input("Expenses", min_value=1000, step=1)
         retirement_age = st.number_input("Retirement Age", min_value=1, max_value=120, step=1)
+        expectancy_life = st.number_input("Expectancy Life", min_value=retirement_age, max_value=100, value=80)
 
     # Dynamic fields based on session state
     st.subheader("Goals")
@@ -127,14 +128,28 @@ with st.form("retirement_planning_form"):
 
 # After submission, display the entered data
 if submit:
+    st.sidebar.title("Investment Calculator")
+    monthly_sip = monthly_sip
+    expected_returns = expected_returns
+    inflation_rate = inflation_rate
+    current_age = current_age
+    retirement_age = retirement_age
+    current_valuation = present_portfolio
+    expenses = expenses
+    monthly_swp = monthly_swp
+    expectancy_life = expectancy_life
+
     st.success("Form Submitted Successfully!")
     st.write(f"**Current Age**: {current_age}")
     st.write(f"**Present Portfolio**: ₹{present_portfolio}")
-    st.write(f"**Income**: ₹{income}")
-    st.write(f"**House Expense**: ₹{house_expense}")
-    st.write(f"**Expense Post Retirement**: ₹{expense_post_retirement}")
-    st.write(f"**Expenses**: {expenses}")
+    st.write(f"**Annual Inflation Rate**: {inflation_rate}")
+    st.write(f"**Expected Annual Returns**: ₹{expected_returns}")
+    st.write(f"**Monthly SIP**: ₹{monthly_sip}")
+    st.write(f"**Monthly SWP**: {monthly_swp}")
     st.write(f"**Retirement Age**: {retirement_age}")
+    st.write(f"**Expenses**: {expenses}")
+    st.write(f"**Expectancy Life**: {expectancy_life}")
+    
 
     # Display dynamic field values
     for field in st.session_state.dynamic_fields:
@@ -142,16 +157,16 @@ if submit:
         value2 = st.session_state.get(field['input_key_value2'], '')
         st.write(f"**{field['title']}**: Value 1 - {value1}, Value 2 - {value2}")
 
-    # Placeholder calculation logic for SIP and ROI
-    monthly_savings_needed = (expense_post_retirement - income) / (retirement_age - current_age) if retirement_age > current_age else 0
-    estimated_roi = 0.08  # Assuming 8% annual return on investment
+    # # Placeholder calculation logic for SIP and ROI
+    # monthly_savings_needed = (expense_post_retirement - income) / (retirement_age - current_age) if retirement_age > current_age else 0
+    # estimated_roi = 0.08  # Assuming 8% annual return on investment
     
-    # Create a DataFrame to show results as a table
-    results = pd.DataFrame({
-        "Metric": ["SIP Amount (₹)", "Estimated ROI (%)"],
-        "Value": [f"{monthly_savings_needed:,.2f}", f"{estimated_roi * 100:.2f}%"]
-    })
+    # # Create a DataFrame to show results as a table
+    # results = pd.DataFrame({
+    #     "Metric": ["SIP Amount (₹)", "Estimated ROI (%)"],
+    #     "Value": [f"{monthly_savings_needed:,.2f}", f"{estimated_roi * 100:.2f}%"]
+    # })
 
-    # Display the calculated results
-    st.write("## Calculated Results")
-    st.table(results)
+    # # Display the calculated results
+    # st.write("## Calculated Results")
+    # st.table(results)
