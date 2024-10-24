@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 
-
 # Inject custom CSS for styling
 st.markdown("""
     <style>
@@ -71,12 +70,12 @@ st.markdown("""
 if 'dynamic_fields' not in st.session_state:
     st.session_state.dynamic_fields = []
 
-# Function to add a new dynamic field with custom title and label
+# Function to add a new dynamic field with two input keys (value1 and value2)
 def add_dynamic_field(title):
     new_field = {
         'title': title,
-        'input_key1': f"input_{len(st.session_state.dynamic_fields)}"
-        'input_key2': f"input_{len(st.session_state.dynamic_fields)}"
+        'input_key_value1': f"value1_{len(st.session_state.dynamic_fields)}",
+        'input_key_value2': f"value2_{len(st.session_state.dynamic_fields)}"
     }
     st.session_state.dynamic_fields.append(new_field)
 
@@ -120,7 +119,8 @@ with st.form("retirement_planning_form"):
     # Loop through dynamic fields and display them in two columns
     for i, field in enumerate(st.session_state.dynamic_fields):
         with dynamic_col1 if i % 2 == 0 else dynamic_col2:
-            st.number_input(field.get('title', 'No Label'), key=field.get('input_key{i}'))
+            value1 = st.number_input(f"Value 1 for {field['title']}", key=field['input_key_value1'])
+            value2 = st.number_input(f"Value 2 for {field['title']}", key=field['input_key_value2'])
 
     # Submit button
     submit = st.form_submit_button("Submit")
@@ -133,16 +133,16 @@ if submit:
     st.write(f"**Income**: ₹{income}")
     st.write(f"**House Expense**: ₹{house_expense}")
     st.write(f"**Expense Post Retirement**: ₹{expense_post_retirement}")
-    st.write(f"**Expenses**: ₹{expenses}")
+    st.write(f"**Expenses**: {expenses}")
     st.write(f"**Retirement Age**: {retirement_age}")
 
     # Display dynamic field values
-    for i, field in st.session_state.dynamic_fields:
-        st.write(f"**{field['title']}**: {st.session_state.get(field['input_key{i}'], '')}")
-
+    for field in st.session_state.dynamic_fields:
+        value1 = st.session_state.get(field['input_key_value1'], '')
+        value2 = st.session_state.get(field['input_key_value2'], '')
+        st.write(f"**{field['title']}**: Value 1 - {value1}, Value 2 - {value2}")
 
     # Placeholder calculation logic for SIP and ROI
-    # These calculations should be replaced with actual logic
     monthly_savings_needed = (expense_post_retirement - income) / (retirement_age - current_age) if retirement_age > current_age else 0
     estimated_roi = 0.08  # Assuming 8% annual return on investment
     
