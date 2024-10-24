@@ -76,7 +76,6 @@ def add_dynamic_field(title):
         'input_key': f"input_{len(st.session_state.dynamic_fields)}"
     }
     st.session_state.dynamic_fields.append(new_field)
-    st.experimental_rerun()
 
 # Title of the app
 st.title("Retirement Planning Form with Custom Dynamic Fields")
@@ -120,6 +119,7 @@ custom_title = st.text_input("Enter Goal Name")
 if st.button("Add Goal"):
     if custom_title :
         add_dynamic_field(custom_title)
+        st.success(f"New field '{custom_title}' added. Please see the new field above.")
     else:
         st.warning("Please provide both a title and a label for the dynamic field!")
 
