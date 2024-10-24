@@ -75,7 +75,8 @@ if 'dynamic_fields' not in st.session_state:
 def add_dynamic_field(title):
     new_field = {
         'title': title,
-        'input_key': f"input_{len(st.session_state.dynamic_fields)}"
+        'input_key1': f"input_{len(st.session_state.dynamic_fields)}"
+        'input_key2': f"input_{len(st.session_state.dynamic_fields)}"
     }
     st.session_state.dynamic_fields.append(new_field)
 
@@ -119,7 +120,7 @@ with st.form("retirement_planning_form"):
     # Loop through dynamic fields and display them in two columns
     for i, field in enumerate(st.session_state.dynamic_fields):
         with dynamic_col1 if i % 2 == 0 else dynamic_col2:
-            st.number_input(field.get('title', 'No Label'), key=field.get('input_key'))
+            st.number_input(field.get('title', 'No Label'), key=field.get('input_key{i}'))
 
     # Submit button
     submit = st.form_submit_button("Submit")
@@ -136,8 +137,8 @@ if submit:
     st.write(f"**Retirement Age**: {retirement_age}")
 
     # Display dynamic field values
-    for field in st.session_state.dynamic_fields:
-        st.write(f"**{field['title']}**: {st.session_state.get(field['input_key'], '')}")
+    for i, field in st.session_state.dynamic_fields:
+        st.write(f"**{field['title']}**: {st.session_state.get(field['input_key{i}'], '')}")
 
 
     # Placeholder calculation logic for SIP and ROI
