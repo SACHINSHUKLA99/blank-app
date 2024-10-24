@@ -137,3 +137,19 @@ if submit:
     st.write("### Dynamic Field Inputs")
     for field in st.session_state.dynamic_fields:
         st.write(f"**{field['title']}**: {st.session_state.get(field['input_key'], '')}")
+
+
+    # Placeholder calculation logic for SIP and ROI
+    # These calculations should be replaced with actual logic
+    monthly_savings_needed = (expense_post_retirement - income) / (retirement_age - current_age) if retirement_age > current_age else 0
+    estimated_roi = 0.08  # Assuming 8% annual return on investment
+    
+    # Create a DataFrame to show results as a table
+    results = pd.DataFrame({
+        "Metric": ["SIP Amount (₹)", "Estimated ROI (%)"],
+        "Value": [f"{monthly_savings_needed:,.2f}", f"{estimated_roi * 100:.2f}%"]
+    })
+
+    # Display the calculated results
+    st.write("## Calculated Results")
+    st.table(results)
