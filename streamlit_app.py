@@ -143,7 +143,7 @@ if st.session_state.page == 'form':
         # Store form data in st.session_state
             st.session_state['monthly_sip'] = monthly_sip
             st.session_state['expected_returns'] = expected_returns
-            st.session_state['inflation_rate'] = inflation_ratea
+            st.session_state['inflation_rate'] = inflation_rate
             st.session_state['current_age'] = current_age
             st.session_state['retirement_age'] = retirement_age
             st.session_state['current_valuation'] = present_portfolio
