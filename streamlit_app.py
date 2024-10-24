@@ -136,7 +136,6 @@ if submit:
     st.write(f"**Retirement Age**: {retirement_age}")
 
     # Display dynamic field values
-    st.write("### Dynamic Field Inputs")
     for field in st.session_state.dynamic_fields:
         st.write(f"**{field['title']}**: {st.session_state.get(field['input_key'], '')}")
 
