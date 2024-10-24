@@ -69,12 +69,11 @@ st.markdown("""
 if 'dynamic_fields' not in st.session_state:
     st.session_state.dynamic_fields = []
 
-# Function to add a new dynamic field with custom title, label, and input type
-def add_dynamic_field(title, label, input_type):
+# Function to add a new dynamic field with custom title and label
+def add_dynamic_field(title, label):
     new_field = {
         'title': title,
         'label': label,
-        'input_type': input_type,
         'input_key': f"input_{len(st.session_state.dynamic_fields)}"
     }
     st.session_state.dynamic_fields.append(new_field)
@@ -109,12 +108,7 @@ with st.form("retirement_planning_form"):
     for i, field in enumerate(st.session_state.dynamic_fields):
         with dynamic_col1 if i % 2 == 0 else dynamic_col2:
             st.write(f"**{field.get('title', 'Untitled')}**")
-            input_type = field.get('input_type', 'Text')  # Default to 'Text' if not present
-            
-            if input_type == 'Text':
-                st.text_input(field.get('label', 'No Label'), key=field.get('input_key'))
-            elif input_type == 'Number':
-                st.number_input(field.get('label', 'No Label'), key=field.get('input_key'))
+            st.number_input(field.get('label', 'No Label'), key=field.get('input_key'))
 
     # Submit button
     submit = st.form_submit_button("Submit")
@@ -123,12 +117,11 @@ with st.form("retirement_planning_form"):
 st.subheader("Add Goals")
 custom_title = st.text_input("Enter Goal Title")
 custom_label = st.text_input("Enter Goal Name")
-input_type = st.selectbox("Select Input Type", ("Text", "Number"))
 
 # Button to add new dynamic field
 if st.button("Add Dynamic Field"):
     if custom_title and custom_label:
-        add_dynamic_field(custom_title, custom_label, input_type)
+        add_dynamic_field(custom_title, custom_label)
     else:
         st.warning("Please provide both a title and a label for the dynamic field!")
 
